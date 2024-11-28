@@ -9,10 +9,18 @@ def get_herois(db: Session, skip: int = 0, limit: int = 10):
 # Função para criar um herói no banco de dados
 def create_heroi(db: Session, heroi: schemas.HeroCreate):
     db_heroi = models.Heroi(
-        nome=heroi.nome, 
+        nome=heroi.nome,
         alias=heroi.alias,
         descricao=heroi.descricao,
-        cidade=heroi.cidade
+        cidade=heroi.cidade,
+        altura=heroi.altura,
+        sexo=heroi.sexo,
+        peso=heroi.peso,
+        data_nascimento=heroi.data_nascimento,
+        nome_real=heroi.nome_real,
+        local_nascimento=heroi.local_nascimento,
+        nivel_de_forca=heroi.nivel_de_forca,
+        status=heroi.status
     )
     db.add(db_heroi)
     db.commit()
@@ -29,6 +37,7 @@ def update_heroi(db: Session, heroi_id: int, heroi_update: schemas.HeroUpdate):
     if db_heroi is None:
         raise HTTPException(status_code=404, detail="Hero not found")
 
+    # Atualiza os campos com base nos valores fornecidos
     for key, value in heroi_update.dict(exclude_unset=True).items():
         setattr(db_heroi, key, value)
     
